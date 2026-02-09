@@ -68,15 +68,17 @@ public class DataAggregatorService {
      * Mengambil data dari in-memory store
      * Tidak melakukan call ke external API
      */
-    public Object getData(ResourceType resourceType) {
+public Object getData(ResourceType resourceType) {
 
-        Object data = dataStore.get(resourceType);
+    Object data = dataStore.get(resourceType);
 
-        if (data == null) {
-            throw new IllegalArgumentException(
-                    "Data untuk resource type " + resourceType + " tidak ditemukan");
-        }
-
-        return data;
+    if (data == null) {
+        throw new IllegalArgumentException(
+                "Data untuk resource type " + resourceType + " tidak ditemukan");
     }
+
+    // Unified JSON Array
+    return Collections.singletonList(data);
+}
+
 }
