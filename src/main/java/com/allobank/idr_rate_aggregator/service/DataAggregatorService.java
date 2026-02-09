@@ -24,7 +24,7 @@ public class DataAggregatorService {
 
     /**
      * Map strategy hasil dari StrategyConfig
-     * Key   : ResourceType
+     * Key : ResourceType
      * Value : Strategy implementation
      */
     private final Map<ResourceType, IDRDataFetcherStrategy> strategyMap;
@@ -68,17 +68,21 @@ public class DataAggregatorService {
      * Mengambil data dari in-memory store
      * Tidak melakukan call ke external API
      */
-public Object getData(ResourceType resourceType) {
+    public Object getData(ResourceType resourceType) {
+        
+        if (dataStore.isEmpty()) {
+            throw new IllegalStateException("Data belum di-load saat startup");
+        }
 
-    Object data = dataStore.get(resourceType);
+        Object data = dataStore.get(resourceType);
 
-    if (data == null) {
-        throw new IllegalArgumentException(
-                "Data untuk resource type " + resourceType + " tidak ditemukan");
+        if (data == null) {
+            throw new IllegalArgumentException(
+                    "Data untuk resource type " + resourceType + " tidak ditemukan");
+        }
+
+        // Unified JSON Array
+        return Collections.singletonList(data);
     }
-
-    // Unified JSON Array
-    return Collections.singletonList(data);
-}
 
 }
